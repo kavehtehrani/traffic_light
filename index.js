@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const path = require('path');
-
+const Traffic = require('./models/traffic');
 
 mongoose.connect('mongodb://localhost:27017/traffic_light', {
     useNewUrlParser: true,
@@ -24,6 +24,13 @@ app.set('views', path.join(__dirname, 'views'))
 app.get('/', (req, res) => {
     res.render('home.ejs')
 });
+
+// ***TEST DATA***
+// app.get('/booboo', async (req, res) => {
+//     const traffic = new Traffic({ name: 'christie', status: '2' })
+//     await traffic.save();
+//     res.send(traffic)
+// });
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404))
