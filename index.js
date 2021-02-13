@@ -30,10 +30,6 @@ app.use(methodOverride('_method'));
 
 app.use(express.urlencoded({extended: true}));
 
-app.get('/', (req, res) => {
-    res.render('home.ejs')
-});
-
 app.post('/', async (req, res, next) => {
     const traffic = new Traffic(req.body.traffic);
     await traffic.save();
