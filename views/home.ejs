@@ -1,6 +1,9 @@
+<<<<<<< Updated upstream
 <!DOCTYPE html>
 <html lang="en">
 
+=======
+>>>>>>> Stashed changes
 <head>
     <meta charset="UTF-8">
     <title>Traffic Light</title>
@@ -12,8 +15,8 @@
     <link rel="stylesheet" href="index.css" class="stylesheet">
 </head>
 
-<body>
-    <div class="container mt-3">
+<div class="container mt-3">
+    <% for (let curName of listName) { %>
         <div class="row">
             <div class="d-flex flex-fill  mb-3" id="list-names">
                 <div class="col-4">Kaveh</div>
@@ -30,6 +33,7 @@
                 </div>
             </div>
             <hr>
+<<<<<<< Updated upstream
             <form action="/" method="POST">
                 <div class="mt-3">
                     <input type="text" id="txt-name-add" name="name_add" class="text" placeholder="New kid's name">
@@ -39,3 +43,23 @@
 </body>
 
 </html>
+=======
+            <div class="mt-3">
+                <input type="text" id="txt-name-add" name="name_add" class="text" placeholder="New kid's name">
+                <button class="btn btn-primary ms-2" id="btn_add-new">Add Person</button>
+            </div>
+            <form action="/<%= curName._id %>?_method=DELETE" method="POST">
+                <button class="btn btn-sm btn-danger">Delete</button>
+            </form>
+
+        </div>
+    <% } %>
+
+    <div class="mt-3">
+        <input type="text" id="txt-name-add" name="name_add" class="text" placeholder="New kid's name">
+        <button class="btn btn-primary ms-2" id="btn_add-new">Add Person</button>
+    </div>
+
+
+</div>
+>>>>>>> Stashed changes
