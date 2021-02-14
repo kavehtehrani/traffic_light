@@ -2,8 +2,15 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const TrafficSchema = new Schema({
-    name: String,
-    status: Number,
+    name: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    status: {
+        type: Number,
+        default: 0
+    },
     message: String
 });
 
