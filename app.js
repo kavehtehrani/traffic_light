@@ -2,10 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const path = require('path');
-const Traffic = require('./models/traffic');
+const Traffic = require('./models/model_traffic');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 const catchAsync = require('./utils/catchAsync');
+const uuid = require('uuid')
 
 
 mongoose.connect('mongodb://localhost:27017/traffic_light', {
@@ -63,17 +64,6 @@ app.delete('/:id', catchAsync(async (req, res) => {
     res.redirect('/');
 }))
 
-
-// ***TEST DATA***
-// app.get('/booboo', async (req, res) => {
-//     const traffic = new Traffic({ name: 'christie', status: '2' })
-//     await traffic.save();
-//     res.send(traffic)
-// });
-
-// app.all('*', (req, res, next) => {
-//     next(new ExpressError('Page Not Found', 404))
-// })
 
 app.listen(3000, () => {
     console.log('Serving on port 3000')
