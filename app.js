@@ -41,10 +41,15 @@ app.post('/', async (req, res, next) => {
 });
 
 app.get('/', async (req, res) => {
+    res.render('home.ejs')
+})
+
+
+app.get('/', async (req, res) => {
     console.log('Main Page')
     const listName = await Traffic.find({});
     const msgDisplay = ["Free, come on in!", "On call, but can come in.", "Busy, you shall not pass!"]
-    res.render('home.ejs', {listName, msgDisplay})
+    res.render('traffic_instance.ejs', {listName, msgDisplay})
 });
 
 app.put('/:id/', catchAsync(async (req, res) => {
