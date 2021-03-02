@@ -10,7 +10,7 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const catchAsync = require('./utils/catchAsync');
 const uuid = require('uuid')
-
+const dateFormat = require("dateformat");
 
 mongoose.connect('mongodb://localhost:27017/traffic_light', {
     useNewUrlParser: true,
@@ -41,7 +41,6 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 
-
 app.engine('ejs', ejsMate)
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
@@ -63,7 +62,7 @@ app.get('/', (req, res) => {
     res.render('home.ejs')
 })
 
-app.get('/new', catchAsync(async (req, res, next) => {
+app.get('/new', catchAsync(async (req, res) => {
     console.log('new instance')
     const trafficInstance = new ModelTrafficInstance({'url': uuid.v4()});
     await trafficInstance.save();
@@ -76,13 +75,14 @@ app.get('/:idInstance/', async (req, res) => {
     console.log('Instance Page')
     const trafficInstance = await ModelTrafficInstance.findOne({'url': req.params.idInstance}).populate('roommates')
     const instanceURL = trafficInstance.url;
-    const listName = trafficInstance.roommates;
+    const listRoommates = trafficInstance.roommates;
     const msgDisplay = ["Free, come on in!", "Can come in quietly.", "Busy, you shall not pass!"]
-    res.render('trafficInstance.ejs', {listName, instanceURL, msgDisplay})
+    res.render('trafficInstance.ejs', {listRoommates, instanceURL, msgDisplay, dateFormat})
 });
 
-app.post('/:idInstance', async (req, res, next) => {
+app.post('/:idInstance', async (req, res) => {
     const roommate = new ModelRoommate(req.body.roommate);
+    roommate.lastUpdate = Date()
     await roommate.save();
 
     // add to traffic instance
