@@ -1,0 +1,69 @@
+<% layout('layouts/boilerplate') %>
+
+<link rel="stylesheet" href="stylesheets/trafficInstance.css">
+
+
+<div class="container mt-3">
+    <div class="row" id="curRoommates">
+        <% for (let curName of listName) { %>
+            <div class="card mt-2" id="roommateCard">
+                <div class="card-header">
+                    <div class="d-flex flex-row justify-content-between">
+                        <div class="p-2"><%= curName.name %></div>
+                        <div class="d-flex flex-row justify-content-between">
+                            <div class="p-2 text-secondary"><%= curName.lastUpdate %></div>
+                            <div class="p-2">
+                                <form action="/<%= instanceURL %>/<%= curName._id %>?_method=DELETE" method="POST">
+                                    <button type="btn" class="btn-close" aria-label="Delete"></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body col-12">
+                    <div class="" id="list-names">
+                        <form class="row gy-2 gx-3 align-items-center" action="/<%= instanceURL %>/<%= curName._id %>?_method=PUT" method="POST">
+                            <div class="col-4">
+                                <div class="mb-3">
+                                    <select onchange="this.form.submit();"
+                                            class="form-control <%- curName.status == 0 ? 'text-success' : curName.status == 1 ? 'text-warning' : 'text-danger' %>"
+                                            aria-label="Default select example" name="roommate[status]" id="<% curName._id %>_status">
+                                        <option selected><%= msgDisplay[curName.status] %></option>
+                                        <option disabled>──────────</option>
+                                        <option class="text-success" value="0">Free, come on in!</option>
+                                        <option class="text-warning" value="1">On call, but can come in.</option>
+                                        <option class="text-danger" value="2">Busy, you shall not pass!</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" name="roommate[message]"
+                                           placeholder="Leave a message here..."
+                                           value="<%= curName.message %>">
+                                    <button class="btn btn-success" type="submit">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-1">
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    </div>
+
+    <hr>
+    <div id="newRoommates" class="mb-6">
+        <div id="newPerson">
+            <h2> &nbsp Add Roommates </h2>
+        </div>
+        <div class="ms-1 mb-6">
+            <form action='/<%= instanceURL %>' method="POST">
+                <div class="mt-3">
+                    <input type="text-lg" id="txt-name-add" name="roommate[name]" class="text" placeholder="Roommate's name" required>
+                    <button class="btn btn-primary ms-2" id="btn_add-new">Add New Roommate</button>
+                </div>
+            </form>
+        </div>
+    </div>
