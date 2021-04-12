@@ -25,6 +25,7 @@ const {checkHuman} = require('./public/javascript/recaptcha')
 //     useUnifiedTopology: true
 // });
 
+// changed to remote db
 mongoose.connect(`mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@clustertrafficsignal.xv8s2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
     useCreateIndex: true,
