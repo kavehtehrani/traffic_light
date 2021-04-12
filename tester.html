@@ -1,29 +1,13 @@
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Traffic Light</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
-            crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="public/stylesheets/home.css" class="stylesheet">
+    <title>reCAPTCHA demo: Simple page</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
-
 <body>
-
-    <!-- Example single danger button -->
-    <div class="btn-group">
-        <button type="button" id="testdd" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            Action
-        </button>
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Separated link</a></li>
-        </ul>
-    </div>
+    <form action="?" method="POST">
+        <div class="g-recaptcha" data-sitekey="6LcENG8aAAAAABH23EoxaQDuKJ-qMMULL7F5m3Gz"></div>
+        <br/>
+        <input type="submit" value="Submit">
+    </form>
 </body>
 </html>
