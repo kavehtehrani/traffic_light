@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
 const express = require('express');
 const mongoose = require('mongoose')
 const ejsMate = require('ejs-mate');
@@ -11,12 +15,22 @@ const session = require('express-session');
 const catchAsync = require('./utils/catchAsync');
 const uuid = require('uuid')
 const dateFormat = require("dateformat");
+const bodyParser = require('body-parser');
+const fetch = require('isomorphic-fetch');
+const {checkHuman} = require('./public/javascript/recaptcha')
 
-mongoose.connect('mongodb://localhost:27017/traffic_light', {
+// mongoose.connect('mongodb://localhost:27017/traffic_light', {
+//     useNewUrlParser: true,
+//     useCreateIndex: true,
+//     useUnifiedTopology: true
+// });
+
+mongoose.connect(`mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@clustertrafficsignal.xv8s2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true
 });
+
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -27,7 +41,6 @@ db.once('open', () => {
 mongoose.set('useFindAndModify', false);
 
 const app = express();
-
 const sessionConfig = {
     secret: 'needtochange',
     resave: false,
@@ -47,37 +60,37 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(bodyParser.json());
 console.log(path.join(__dirname, 'public'))
 
 
 app.use((req, res, next) => {
     // res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
-    res.locals.error = req.flash('error')
+    res.locals.error = req.flash('error');
     next();
 })
 
 app.get('/', (req, res) => {
-    console.log('home')
-    res.render('home.ejs')
+    API_KEY = process.env.CAPTCHA_API_KEY_V3
+    res.render('home.ejs', {API_KEY})
 })
 
-app.get('/new', catchAsync(async (req, res) => {
-    console.log('new instance')
+app.post('/new', checkHuman, catchAsync(async (req, res) => {
     const trafficInstance = new ModelTrafficInstance({'url': uuid.v4()});
     await trafficInstance.save();
     req.flash('success', 'Successfully made a new traffic light!');
-    res.redirect(`/${trafficInstance.url}`)
+    res.redirect(302, `/${trafficInstance.url}`)
 }))
 
 
-app.get('/:idInstance/', async (req, res) => {
+app.get('/:idInstance', async (req, res) => {
     console.log('Instance Page')
     const trafficInstance = await ModelTrafficInstance.findOne({'url': req.params.idInstance}).populate('roommates')
     const instanceURL = trafficInstance.url;
     const listRoommates = trafficInstance.roommates;
     const msgDisplay = ["Free, come on in!", "Can come in quietly.", "Busy, you shall not pass!"]
-    res.render('trafficInstance.ejs', {listRoommates, instanceURL, msgDisplay, dateFormat})
+    res.status(302).render('trafficInstance.ejs', {listRoommates, instanceURL, msgDisplay, dateFormat})
 });
 
 app.post('/:idInstance', async (req, res) => {
@@ -90,6 +103,7 @@ app.post('/:idInstance', async (req, res) => {
     trafficInstance.roommates.push(roommate)
     await trafficInstance.save()
 
+    req.flash('success', `Welcome ${roommate.name}!`);
     res.redirect(`/${req.params.idInstance}`);
 });
 

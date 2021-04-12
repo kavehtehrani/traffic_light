@@ -11,7 +11,7 @@
                     <div class="d-flex flex-row justify-content-between">
                         <div class="p-2"><%= curRoommate.name %></div>
                         <div class="d-flex flex-row justify-content-between">
-                            <div class="p-2 text-secondary"><%= dateFormat(curRoommate.lastUpdate, "ddd yyyy-mm-dd h:MM:sstt")  %></div>
+                            <div class="p-2 text-secondary"><%= dateFormat(curRoommate.lastUpdate, "ddd yyyy-mm-dd h:MMtt")  %></div>
                             <div class="p-2">
                                 <form action="/<%= instanceURL %>/<%= curRoommate._id %>?_method=DELETE" method="POST">
                                     <button type="btn" class="btn-close" aria-label="Delete"></button>
@@ -31,7 +31,7 @@
                                         <option selected><%= msgDisplay[curRoommate.status] %></option>
                                         <option disabled>──────────</option>
                                         <option class="text-success" value="0">Free, come on in!</option>
-                                        <option class="text-warning" value="1">On call, but can come in.</option>
+                                        <option class="text-warning" value="1">Can come in quietly.</option>
                                         <option class="text-danger" value="2">Busy, you shall not pass!</option>
                                     </select>
                                 </div>
