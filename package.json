@@ -12,9 +12,7 @@
     "express-session": "^1.17.1",
     "method-override": "^3.0.0",
     "mongoose": "^5.11.16",
-    "uuid": "^8.3.2"
-  },
-  "devDependencies": {
+    "uuid": "^8.3.2",
     "dateformat": "^4.5.1",
     "isomorphic-fetch": "^3.0.0"
   }
