@@ -18,6 +18,8 @@ const dateFormat = require("dateformat");
 const bodyParser = require('body-parser');
 const fetch = require('isomorphic-fetch');
 const {checkHuman} = require('./public/javascript/recaptcha')
+// const {MongoStore} = require('connect-mongo')
+// const MongoDBStore = require("connect-mongo")(session)
 
 // mongoose.connect('mongodb://localhost:27017/traffic_light', {
 //     useNewUrlParser: true,
@@ -26,7 +28,8 @@ const {checkHuman} = require('./public/javascript/recaptcha')
 // });
 
 // changed to remote db
-mongoose.connect(`mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@clustertrafficsignal.xv8s2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, {
+MONGO_URI = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@clustertrafficsignal.xv8s2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
+mongoose.connect(MONGO_URI, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true
@@ -37,6 +40,7 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
     console.log('Database Connected');
+    console.log(MONGO_URI)
 });
 
 mongoose.set('useFindAndModify', false);
@@ -78,6 +82,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/new', checkHuman, catchAsync(async (req, res) => {
+    console.log('NEW REQUESTED')
     const trafficInstance = new ModelTrafficInstance({'url': uuid.v4()});
     await trafficInstance.save();
     req.flash('success', 'Successfully made a new traffic light!');
@@ -128,7 +133,7 @@ app.delete('/:idInstance/:idRoommate', catchAsync(async (req, res) => {
 }))
 
 
-// app.listen(3000, () => {
-app.listen(process.env.PORT, () => {
-    console.log('Serving on port 3000')
+PORT = process.env.PORT || 3000
+app.listen(3000, () => {
+    console.log(`Serving on port ${PORT}`)
 })
