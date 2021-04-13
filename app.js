@@ -135,6 +135,6 @@ app.delete('/:idInstance/:idRoommate', catchAsync(async (req, res) => {
 
 
 PORT = process.env.PORT || 3000
-app.listen(3000, () => {
+app.listen(PORT, () => {
     console.log(`Serving on port ${PORT}`)
 })
