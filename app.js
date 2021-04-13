@@ -77,6 +77,7 @@ app.use((req, res, next) => {
 })
 
 app.get('/', (req, res) => {
+    console.log('HOME PAGE')
     API_KEY = process.env.CAPTCHA_API_KEY_V3
     res.render('home.ejs', {API_KEY})
 })
