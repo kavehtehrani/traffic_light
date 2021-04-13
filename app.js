@@ -27,6 +27,8 @@ const {checkHuman} = require('./public/javascript/recaptcha')
 //     useUnifiedTopology: true
 // });
 
+let isNew = false;
+
 // changed to remote db
 MONGO_URI = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@clustertrafficsignal.xv8s2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
 mongoose.connect(MONGO_URI, {
@@ -40,7 +42,6 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
     console.log('Database Connected');
-    console.log(MONGO_URI)
 });
 
 mongoose.set('useFindAndModify', false);
@@ -83,20 +84,24 @@ app.get('/', (req, res) => {
 })
 
 app.post('/new', checkHuman, catchAsync(async (req, res) => {
-    console.log('NEW REQUESTED')
+    // console.log('NEW REQUESTED')
     const trafficInstance = new ModelTrafficInstance({'url': uuid.v4()});
     await trafficInstance.save();
-    req.flash('success', 'Successfully made a new traffic light!');
+    isNew = true
     res.redirect(302, `/${trafficInstance.url}`)
 }))
 
 
 app.get('/:idInstance', async (req, res) => {
-    console.log('Instance Page')
+    // console.log('Instance Page')
     const trafficInstance = await ModelTrafficInstance.findOne({'url': req.params.idInstance}).populate('roommates')
     const instanceURL = trafficInstance.url;
     const listRoommates = trafficInstance.roommates;
     const msgDisplay = ["Free, come on in!", "Can come in quietly.", "Busy, you shall not pass!"]
+    if (isNew) {
+        req.flash('success', 'Welcome to your new traffic light! Please save the link and share with your roommates.');
+        isNew = false
+    }
     res.status(302).render('trafficInstance.ejs', {listRoommates, instanceURL, msgDisplay, dateFormat})
 });
 
@@ -117,7 +122,7 @@ app.post('/:idInstance', async (req, res) => {
 
 app.put('/:idInstance/:idRoommate/', catchAsync(async (req, res) => {
     const {idRoommate} = req.params;
-    console.log(req.body['roommate'])
+    // console.log(req.body['roommate'])
     if (req.body['roommate']['status'].match(/^[0-9]+$/) == null) {
         delete req.body['roommate']['status'];
     }

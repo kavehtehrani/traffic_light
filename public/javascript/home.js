@@ -1,5 +1,4 @@
-el = document.getElementById("btnGetLight")
-el.addEventListener('click', onClick)
+document.getElementById("btnGetLight").addEventListener('click', onClick)
 
 function showResult(res) {
     window.location.href = res.url
@@ -9,8 +8,8 @@ function showResult(res) {
 function onClick(e) {
     e.preventDefault();
     grecaptcha.ready(function() {
-        grecaptcha.execute('6LfYNG8aAAAAAFi1diblxolGLu9Qd0AhY9VEfs3H', {action: 'click'}).then(function(token) {
-            console.log(token)
+        grecaptcha.execute(API_KEY, {action: 'click'}).then(function(token) {
+            // console.log(token)
 
             var data = {
                 hello: 'hhere',
@@ -28,7 +27,6 @@ function onClick(e) {
             })
                 .then(response => {
                     // HTTP 301 response
-                    // HOW CAN I FOLLOW THE HTTP REDIRECT RESPONSE?
                     if (response.redirected) {
                         window.location.href = response.url;
                     }
