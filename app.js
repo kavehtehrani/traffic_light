@@ -79,7 +79,7 @@ app.use((req, res, next) => {
 
 app.get('/', (req, res) => {
     console.log('HOME PAGE')
-    API_KEY = process.env.CAPTCHA_API_KEY_V3
+    const API_KEY = process.env.CAPTCHA_API_KEY_V3
     res.render('home.ejs', {API_KEY})
 })
 
@@ -98,11 +98,12 @@ app.get('/:idInstance', async (req, res) => {
     const instanceURL = trafficInstance.url;
     const listRoommates = trafficInstance.roommates;
     const msgDisplay = ["Free, come on in!", "Can come in quietly.", "Busy, you shall not pass!"]
+    const API_KEY = process.env.CAPTCHA_API_KEY_V3
     if (isNew) {
         req.flash('success', 'Welcome to your new traffic light! Please save the link and share with your roommates.');
         isNew = false
     }
-    res.status(302).render('trafficInstance.ejs', {listRoommates, instanceURL, msgDisplay, dateFormat})
+    res.status(302).render('trafficInstance.ejs', {listRoommates, instanceURL, msgDisplay, dateFormat, API_KEY})
 });
 
 app.post('/:idInstance', async (req, res) => {

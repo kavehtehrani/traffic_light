@@ -22,3 +22,6 @@ body {
     align-items: end;
 }
 
+.grecaptcha-badge {
+    visibility: hidden;
+}
