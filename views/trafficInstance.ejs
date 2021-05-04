@@ -11,7 +11,7 @@
                     <div class="p-2"><%= curRoommate.name %></div>
                     <div class="d-flex flex-row justify-content-between">
                         <div class="p-2 text-secondary">
-                            <%= dateFormat(curRoommate.lastUpdate, "ddd yyyy-mm-dd h:MMtt")  %></div>
+                            <%= dateFormat(curRoommate.lastUpdate, "ddd h:MMtt")  %></div>
                         <div class="p-2">
                             <form action="/<%= instanceURL %>/<%= curRoommate._id %>?_method=DELETE" method="POST">
                                 <button type="btn" class="btn-close" aria-label="Delete"></button>

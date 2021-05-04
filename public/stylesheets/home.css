@@ -19,11 +19,11 @@ body {
     /* margin-bottom: 110px; */
 }
 
-@media (max-width: 767px) {
+/* @media (max-width: 767px) {
     body {
             margin-bottom: 110px;
     }
-}
+} */
 
 .container {
     position: relative;
@@ -70,6 +70,19 @@ h1 {
         padding-right: 8.7rem;
     }
 }
+
+@media only screen and (max-width: 992px) {
+    .homepage-body {
+        margin-top: 3rem;
+    }
+  }
+
+@media only screen and (max-width: 600px) {
+    .homepage-body {
+        margin-top: 1rem;
+    }
+  }
+  
 
 .home-p {
     color: #5c5c5c;
