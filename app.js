@@ -99,10 +99,10 @@ app.get('/:idInstance', async (req, res) => {
     const listRoommates = trafficInstance.roommates;
     const msgDisplay = ["Free, come on in!", "Can come in quietly.", "Busy, you shall not pass!"]
     const API_KEY = process.env.CAPTCHA_API_KEY_V3
-    if (isNew) {
-        req.flash('success', 'Welcome to your new traffic light! Please save the link and share with your roommates.');
-        isNew = false
-    }
+    // if (isNew) {
+    //     req.flash('success', 'Welcome to your new traffic light! Please save the link and share with your housemates.');
+    //     isNew = false
+    // }
     res.status(302).render('trafficInstance.ejs', { listRoommates, instanceURL, msgDisplay, dateFormat, API_KEY })
 });
 

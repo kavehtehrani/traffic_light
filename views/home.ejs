@@ -15,26 +15,35 @@
     </div> -->
 
     <div class="homepage row">
-        <div class="homepage-body col-lg-5">
+        <div class="homepage-body col-md-8 col-lg-6">
             <h1>Work from home without interruptions.</h1>
             <div class="col-lg-6">
                 <a href="/new" class="btn" id="btnGetLight">Get Traffic Light</a>
             </div>
-            <p class="home-p">Traffic Signal is a home traffic control system. Start a new traffic light to share
-                with your housemates.</p>
+            <!-- <p class="home-p">Traffic Signal is a home traffic control system. Start a new traffic light to share
+                with your housemates.</p> -->
         </div>
-        <div class="homepage-img col-lg">
-            <img width="100%"
+        <div class="homepage-img col-md col-lg d-md-none">
+            <img width="100%" src="../images/photo-1511649475669-e288648b2339.png"
+                alt="https://unsplash.com/photos/PypjzKTUqLo">
+            <!-- <img width="100%"
                 src="https://images.unsplash.com/photo-1599525785308-d77c14067aa8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1789&q=80"
-                alt="">
+                alt=""> -->
+        </div>
+    </div>
+    <div class="homepage row whitebackground">
+        <div class="screenshots col-md-7">
+            <img width="100%" src="../images/screenshots.png" alt="">
+        </div>
+        <div class="homepage-about col-md">
+            <h3>Traffic Signal is a home traffic control system.</h3>
+            <h5>Take your calls and study for your exams without interruption.</h5>
         </div>
     </div>
 
-</div>
 
+    <script>
+        const API_KEY = '<%= API_KEY %>'
+    </script>
 
-<script>
-    const API_KEY = '<%= API_KEY %>'
-</script>
-
-<script type="text/javascript" src="/javascript/home.js"></script>
+    <script type="text/javascript" src="/javascript/home.js"></script>

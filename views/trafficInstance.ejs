@@ -2,71 +2,93 @@
 
 <link rel="stylesheet" href="stylesheets/trafficInstance.css">
 
-<div class="container mt-3">
-    <div class="row" id="curRoommates">
-        <% for (let curRoommate of listRoommates) { %>
-        <div class="card mt-2" id="roommateCard">
-            <div class="card-header">
+<div class="row" id="curRoommates">
+    <% for (let curRoommate of listRoommates) { %>
+    <div class="card mb-3" id="roommateCard">
+        <div class="card-header">
+            <div class="d-flex flex-row justify-content-between">
+                <div class="p-2"><%= curRoommate.name %></div>
                 <div class="d-flex flex-row justify-content-between">
-                    <div class="p-2"><%= curRoommate.name %></div>
-                    <div class="d-flex flex-row justify-content-between">
-                        <div class="p-2 text-secondary">
-                            <%= dateFormat(curRoommate.lastUpdate, "ddd h:MMtt")  %></div>
-                        <div class="p-2">
-                            <form action="/<%= instanceURL %>/<%= curRoommate._id %>?_method=DELETE" method="POST">
-                                <button type="btn" class="btn-close" aria-label="Delete"></button>
-                            </form>
-                        </div>
+                    <div class="p-2 text-secondary">
+                        <%= dateFormat(curRoommate.lastUpdate, "ddd h:MMtt")  %></div>
+                    <div class="p-2">
+                        <form action="/<%= instanceURL %>/<%= curRoommate._id %>?_method=DELETE" method="POST">
+                            <button type="btn" class="btn-close" aria-label="Delete"></button>
+                        </form>
                     </div>
                 </div>
             </div>
-            <div class="card-body">
-                <div class="" id="list-names">
-                    <form class="row gy-2 gx-3 align-items-center"
-                        action="/<%= instanceURL %>/<%= curRoommate._id %>?_method=PUT" method="POST">
-                        <div class="col-lg-4">
-                            <div class="mb-3">
-                                <select onchange="this.form.submit();"
-                                    class="form-control <%- curRoommate.status == 0 ? 'text-success' : curRoommate.status == 1 ? 'text-warning' : 'text-danger' %>"
-                                    aria-label="Default select example" name="roommate[status]"
-                                    id="<% curRoommate._id %>_status">
-                                    <option selected><%= msgDisplay[curRoommate.status] %></option>
-                                    <option disabled>──────────</option>
-                                    <option class="text-success" value="0">Free, come on in!</option>
-                                    <option class="text-warning" value="1">Can come in quietly.</option>
-                                    <option class="text-danger" value="2">Busy, you shall not pass!</option>
-                                </select>
-                            </div>
+        </div>
+        <div class="card-body">
+            <div class="" id="list-names">
+                <form class="row gy-2 gx-3 align-items-center"
+                    action="/<%= instanceURL %>/<%= curRoommate._id %>?_method=PUT" method="POST">
+                    <div class="col-lg-4">
+                        <div class="mb-3">
+                            <select onchange="this.form.submit();"
+                                class="form-control <%- curRoommate.status == 0 ? 'text-success' : curRoommate.status == 1 ? 'text-warning' : 'text-danger' %>"
+                                aria-label="Default select example" name="roommate[status]"
+                                id="<% curRoommate._id %>_status">
+                                <option selected><%= msgDisplay[curRoommate.status] %></option>
+                                <option disabled>──────────</option>
+                                <option class="text-success" value="0">Free, come on in!</option>
+                                <option class="text-warning" value="1">Can come in quietly.</option>
+                                <option class="text-danger" value="2">Busy, you shall not pass!</option>
+                            </select>
                         </div>
-                        <div class="col-lg-8">
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" name="roommate[message]"
-                                    placeholder="Leave a message here..." value="<%= curRoommate.message %>">
-                                <button class="btn btn-success" type="submit">Submit</button>
-                            </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" name="roommate[message]"
+                                placeholder="Leave a message here..." value="<%= curRoommate.message %>">
+                            <button class="btn btn-success" type="submit">Submit</button>
                         </div>
-                    </form>
-                </div>
-                <div class="col-1">
-                </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-1">
             </div>
         </div>
-        <% } %>
     </div>
-
-    <hr>
-    <div id="newRoommates" class="mb-6">
-        <div id="newPerson">
-            <h2> &nbsp Add Housemates </h2>
+    <% } %>
+</div>
+<!-- <hr> -->
+<div id="newRoommates">
+    <div id="newPerson">
+        <h2>Add Housemates</h2>
+    </div>
+    <div>
+        <form action='/<%= instanceURL %>' method="POST">
+            <div class="input-group mt-3 mb-3 justify-content-center">
+                <input type="text" id="txt-name-add" name="roommate[name]" class="text" placeholder="New name..."
+                    required>
+                <button class="btn btn-primary" id="btn_add-new">Add</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="nomargin">
+    <div class="share row text-center">
+        <h5>Share your Traffic Light</h5>
+        <p>You can invite as many people as you like.</p>
+        <div class="sharelink">
+            <div class="valid-feedback" id="copied">
+                Copied!
+                <button type="button" class="closebutton" aria-label="Close"
+                    onclick="closebutton()"><sup>x</sup></button>
+            </div>
+            <input type="text" value="http://www.trafficsignal.io/<%= instanceURL %>" id="sharelink">
         </div>
-        <div class="ms-1 mb-6">
-            <form action='/<%= instanceURL %>' method="POST">
-                <div class="input-group mt-3 mb-3 justify-content-center">
-                    <input type="text" id="txt-name-add" name="roommate[name]" class="text" placeholder="New name..."
-                        required>
-                    <button class="btn btn-primary" id="btn_add-new">Add</button>
-                </div>
-            </form>
+        <div class="justify-content-center">
+            <button type="button" class="btn button mx-1" onclick="copyLink()">Copy Link</button>
+            <button type="button" class="btn buttons mx-1"><a
+                    href="mailto:?subject=I want to share my Traffic Light with you&amp;body=Let's use this home Traffic Light to stay out of each other's way while working: http://www.trafficsignal.io/<%= instanceURL %>">
+                    Email</a></button>
+            <button type="button" class="btn buttons mx-1"><a
+                    href="sms:&body=Hey! Let's use this home Traffic Light to stay out of each other's way while working: http://www.trafficsignal.io/<%= instanceURL %>">
+                    Text</a></button>
         </div>
     </div>
 </div>
+<script type="text/javascript" src="/javascript/trafficInstance.js">
+</script>
