@@ -11,6 +11,7 @@
                 <div class="d-flex flex-row justify-content-between">
                     <div class="p-2 text-secondary">
                         <%= dateFormat(curRoommate.lastUpdate.toString(), "ddd h:MMtt")  %></div>
+                        <% console.log(new Date().getTimezoneOffset())%>
                     <div class="p-2">
                         <form action="/<%= instanceURL %>/<%= curRoommate._id %>?_method=DELETE" method="POST">
                             <button type="btn" class="btn-close" aria-label="Delete"></button>
