@@ -6,13 +6,15 @@ module.exports.checkHuman = async (req, res, next) => {
     const ret_val = await fetch(url, {method: 'POST', headers: {'Content-Type': 'application/json'}});
     const data = await ret_val.json();
 
-    if (data.score < .5) {
-        // console.log('BOT DETECTED')
-        req.flash('error', 'Bot detected. Please refresh page and retry.')
-        res.redirect('/')
+    console.log('BOT SCORE: ' + data.score)
+    if (data.score < .3) {
+        console.log('BOT DETECTED')
+        res.locals.isBot = true
+        // res.redirect('/')
         next();
     }
     else{
+        res.locals.isBot = false
         next();
     }
 }

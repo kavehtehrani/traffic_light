@@ -17,7 +17,7 @@ const uuid = require('uuid')
 const dateFormat = require("dateformat");
 const bodyParser = require('body-parser');
 const fetch = require('isomorphic-fetch');
-const { checkHuman } = require('./public/javascript/recaptcha')
+const {checkHuman} = require('./public/javascript/recaptcha')
 // const {MongoStore} = require('connect-mongo')
 // const MongoDBStore = require("connect-mongo")(session)
 
@@ -28,6 +28,7 @@ const { checkHuman } = require('./public/javascript/recaptcha')
 // });
 
 let isNew = false;
+let isBot = false;
 
 // changed to remote db
 MONGO_URI = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@clustertrafficsignal.xv8s2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
@@ -63,7 +64,7 @@ app.use(flash());
 app.engine('ejs', ejsMate)
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(bodyParser.json());
@@ -74,36 +75,51 @@ app.use((req, res, next) => {
     // res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
+    res.locals.isBot = false;
     next();
 })
 
 app.get('/', (req, res) => {
-    console.log('HOME PAGE')
     const API_KEY = process.env.CAPTCHA_API_KEY_V3
-    res.render('home.ejs', { API_KEY })
+    if (isBot) {
+        req.flash('error', 'Bot detected. Please refresh page and retry.')
+        isBot = false;
+    }
+    res.render('home.ejs', {API_KEY})
 })
 
 app.post('/new', checkHuman, catchAsync(async (req, res) => {
     console.log('NEW REQUESTED')
-    const trafficInstance = new ModelTrafficInstance({ 'url': uuid.v4() });
+    const trafficInstance = new ModelTrafficInstance({'url': uuid.v4()});
     await trafficInstance.save();
     isNew = true
-    res.redirect(302, `/${trafficInstance.url}`)
+
+    if (res.locals.isBot) {
+        isBot = true
+        res.redirect(`/`) // ORIGINAL
+
+    } else{
+        // res.status(302).send(`/${trafficInstance.url}`)
+        res.redirect(302, `/${trafficInstance.url}`) // ORIGINAL
+        // res.render(302, `/${trafficInstance.url}`)
+        // res.status(302).redirect(`/${trafficInstance.url}`)
+
+    }
 }))
 
 
 app.get('/:idInstance', async (req, res) => {
     // console.log('Instance Page')
-    const trafficInstance = await ModelTrafficInstance.findOne({ 'url': req.params.idInstance }).populate('roommates')
+    const trafficInstance = await ModelTrafficInstance.findOne({'url': req.params.idInstance}).populate('roommates')
     const instanceURL = trafficInstance.url;
     const listRoommates = trafficInstance.roommates;
     const msgDisplay = ["Free, come on in!", "Can come in quietly.", "Busy, you shall not pass!"]
     const API_KEY = process.env.CAPTCHA_API_KEY_V3
-    // if (isNew) {
-    //     req.flash('success', 'Welcome to your new traffic light! Please save the link and share with your housemates.');
-    //     isNew = false
-    // }
-    res.status(302).render('trafficInstance.ejs', { listRoommates, instanceURL, msgDisplay, dateFormat, API_KEY })
+    if (isNew) {
+        req.flash('success', 'Welcome to your new traffic light! Please save the link and share with your housemates.');
+        isNew = false
+    }
+    res.status(302).render('trafficInstance.ejs', {listRoommates, instanceURL, msgDisplay, dateFormat, API_KEY})
 });
 
 app.post('/:idInstance', async (req, res) => {
@@ -112,7 +128,7 @@ app.post('/:idInstance', async (req, res) => {
     await roommate.save();
 
     // add to traffic instance
-    const trafficInstance = await ModelTrafficInstance.findOne({ 'url': req.params.idInstance })
+    const trafficInstance = await ModelTrafficInstance.findOne({'url': req.params.idInstance})
     trafficInstance.roommates.push(roommate)
     await trafficInstance.save()
 
@@ -122,19 +138,19 @@ app.post('/:idInstance', async (req, res) => {
 
 
 app.put('/:idInstance/:idRoommate/', catchAsync(async (req, res) => {
-    const { idRoommate } = req.params;
+    const {idRoommate} = req.params;
     // console.log(req.body['roommate'])
     if (req.body['roommate']['status'].match(/^[0-9]+$/) == null) {
         delete req.body['roommate']['status'];
     }
 
     req.body['roommate']['lastUpdate'] = Date.now()
-    const roommate = await ModelRoommate.findByIdAndUpdate(idRoommate, { ...req.body.roommate })
+    const roommate = await ModelRoommate.findByIdAndUpdate(idRoommate, {...req.body.roommate})
     res.redirect(`/${req.params.idInstance}`);
 }))
 
 app.delete('/:idInstance/:idRoommate', catchAsync(async (req, res) => {
-    const { idRoommate } = req.params;
+    const {idRoommate} = req.params;
     await ModelRoommate.findByIdAndDelete(idRoommate);
     res.redirect(`/${req.params.idInstance}`);
 }))
