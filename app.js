@@ -98,11 +98,8 @@ app.post('/new', checkHuman, catchAsync(async (req, res) => {
         isBot = true
         res.redirect(`/`) // ORIGINAL
 
-    } else{
-        // res.status(302).send(`/${trafficInstance.url}`)
+    } else {
         res.redirect(302, `/${trafficInstance.url}`) // ORIGINAL
-        // res.render(302, `/${trafficInstance.url}`)
-        // res.status(302).redirect(`/${trafficInstance.url}`)
 
     }
 }))
