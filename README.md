@@ -5,4 +5,4 @@ without a door such as the living room.
 
 This was a simple first app to a fullstack web app in the early days of the pandemic.
 
-![screenshot](.\public\images\screenshots.png)
+![screenshot](public/images/screenshots.png)
