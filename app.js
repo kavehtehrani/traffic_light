@@ -116,7 +116,8 @@ app.get('/:idInstance', async (req, res) => {
         req.flash('success', 'Welcome to your new traffic light! Please save the link and share with your housemates.');
         isNew = false
     }
-    res.status(302).render('trafficInstance.ejs', {listRoommates, instanceURL, msgDisplay, dateFormat, API_KEY})
+    const hostUrl = req.headers.host
+    res.status(302).render('trafficInstance.ejs', {listRoommates, hostUrl, instanceURL, msgDisplay, dateFormat, API_KEY})
 });
 
 app.post('/:idInstance', async (req, res) => {

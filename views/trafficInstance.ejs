@@ -78,15 +78,15 @@
                 <button type="button" class="closebutton" aria-label="Close"
                     onclick="closebutton()"><sup>x</sup></button>
             </div>
-            <input type="text" value="http://www.trafficsignal.io/<%= instanceURL %>" id="sharelink">
+            <input type="text" value="<%=hostUrl%>/<%= instanceURL %>" id="sharelink">
         </div>
         <div class="justify-content-center">
             <button type="button" class="btn button mx-1" onclick="copyLink()">Copy Link</button>
             <button type="button" class="btn buttons mx-1"><a
-                    href="mailto:?subject=I want to share my Traffic Light with you&amp;body=Let's use this home Traffic Light to stay out of each other's way while working: http://www.trafficsignal.io/<%= instanceURL %>">
+                    href="mailto:?subject=I want to share my Traffic Light with you&amp;body=Let's use this home Traffic Light to stay out of each other's way while working: <%= hostUrl %>/<%= instanceURL %>">
                     Email</a></button>
             <button type="button" class="btn buttons mx-1"><a
-                    href="sms:&body=Hey! Let's use this home Traffic Light to stay out of each other's way while working: http://www.trafficsignal.io/<%= instanceURL %>">
+                    href="sms:&body=Hey! Let's use this home Traffic Light to stay out of each other's way while working: <%=hostUrl%>/<%= instanceURL %>">
                     Text</a></button>
         </div>
     </div>
