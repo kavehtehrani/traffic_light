@@ -1,5 +1,7 @@
 # Traffic Signal
 
+Live demo available at: [traffic-signal.cyclic.app/](traffic-signal.cyclic.app/)
+
 Traffic control for shared space. Wrote this to coordinate with my roommates when it's OK to enter their space, especially people who are working in areas
 without a door such as the living room. 
 
